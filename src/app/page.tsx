@@ -2,11 +2,9 @@ import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import Projects from "@/components/sections/Projects";
 import Skills from "@/components/sections/Skills";
+import Experience from "@/components/sections/Experience";
 
-const SECTIONS = [
-  { id: "experience", label: "Experience" },
-  { id: "contact", label: "Contact" },
-] as const;
+const SECTIONS = [{ id: "contact", label: "Contact" }] as const;
 
 export default function Home() {
   return (
@@ -15,6 +13,7 @@ export default function Home() {
       <About />
       <Projects />
       <Skills />
+      <Experience />
       {SECTIONS.map((section) => (
         <section
           key={section.id}
