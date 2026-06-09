@@ -1,8 +1,38 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import {
+  Fragment,
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+  type ReactNode,
+} from "react";
 import { motion } from "framer-motion";
 import GlassCard from "@/components/ui/GlassCard";
+
+/**
+ * Minimal inline renderer: turns `**bold**` into <strong> and newlines into
+ * <br/>. Not a full markdown parser — just enough for the model's basic
+ * formatting. Splitting on the `**…**` capture group keeps the bold text at
+ * odd indices.
+ */
+function renderRichText(text: string): ReactNode {
+  return text.split("\n").map((line, lineIndex) => (
+    <Fragment key={lineIndex}>
+      {lineIndex > 0 && <br />}
+      {line.split(/\*\*(.+?)\*\*/g).map((part, partIndex) =>
+        partIndex % 2 === 1 ? (
+          <strong key={partIndex} className="font-semibold text-cream">
+            {part}
+          </strong>
+        ) : (
+          <Fragment key={partIndex}>{part}</Fragment>
+        ),
+      )}
+    </Fragment>
+  ));
+}
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -147,7 +177,7 @@ export default function AIChat() {
                       : "glass rounded-bl-md border border-white/10 text-foreground/90"
                   }`}
                 >
-                  {msg.content}
+                  {renderRichText(msg.content)}
                 </div>
               </div>
             ))}
