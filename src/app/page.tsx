@@ -3,6 +3,7 @@ import About from "@/components/sections/About";
 import Projects from "@/components/sections/Projects";
 import Skills from "@/components/sections/Skills";
 import Experience from "@/components/sections/Experience";
+import AIChat from "@/components/sections/AIChat";
 
 const SECTIONS = [{ id: "contact", label: "Contact" }] as const;
 
@@ -14,6 +15,7 @@ export default function Home() {
       <Projects />
       <Skills />
       <Experience />
+      <AIChat />
       {SECTIONS.map((section) => (
         <section
           key={section.id}
