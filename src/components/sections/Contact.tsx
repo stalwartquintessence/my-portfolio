@@ -54,7 +54,6 @@ const EMPTY_FORM: FormState = { name: "", email: "", subject: "", message: "" };
 export default function Contact() {
   const [form, setForm] = useState<FormState>(EMPTY_FORM);
   const [status, setStatus] = useState<Status>("idle");
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   function updateField(field: keyof FormState, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -65,7 +64,6 @@ export default function Contact() {
     if (status === "loading") return;
 
     setStatus("loading");
-    setErrorMessage(null);
 
     try {
       const res = await fetch("/api/contact", {
@@ -82,11 +80,8 @@ export default function Contact() {
 
       setStatus("success");
       setForm(EMPTY_FORM);
-    } catch (err) {
+    } catch {
       setStatus("error");
-      setErrorMessage(
-        err instanceof Error ? err.message : "Something went wrong.",
-      );
     }
   }
 
@@ -272,8 +267,7 @@ export default function Contact() {
                   role="alert"
                   className="rounded-lg border border-red-400/30 bg-red-500/10 px-3 py-2 text-sm text-red-300"
                 >
-                  {errorMessage ?? "Something went wrong."} Please try again, or
-                  email me directly.
+                  Something went wrong. Please try again.
                 </p>
               )}
             </form>
