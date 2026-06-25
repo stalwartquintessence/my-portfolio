@@ -1,4 +1,3 @@
-import { createClient } from "@supabase/supabase-js";
 import { Resend } from "resend";
 
 export const runtime = "edge";
@@ -111,28 +110,6 @@ export async function POST(request: Request): Promise<Response> {
       { error: "Please provide a name, valid email, subject, and message." },
       { status: 400 },
     );
-  }
-
-  // Log the submission to Supabase first (best-effort — a logging failure must
-  // not stop the email from going out). Uses the service-role key, which is
-  // server-side only and never exposed to the client.
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (supabaseUrl && serviceRoleKey) {
-    try {
-      const supabase = createClient(supabaseUrl, serviceRoleKey);
-      const { error } = await supabase.from("contact_submissions").insert({
-        name: payload.name,
-        email: payload.email,
-        subject: payload.subject,
-        message: payload.message,
-      });
-      if (error) {
-        console.error("Supabase contact log failed:", error.message);
-      }
-    } catch (err) {
-      console.error("Supabase contact log threw:", err);
-    }
   }
 
   // Send the notification email. The "from" address must be on a Resend-verified

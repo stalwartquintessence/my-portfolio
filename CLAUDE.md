@@ -1,5 +1,7 @@
 # CLAUDE.md
 
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 @AGENTS.md
 
 ## Critical: bundled Next.js docs are the source of truth
@@ -11,7 +13,12 @@ This repo pins a specific Next.js (`next@16.2.7`) whose APIs and conventions may
 Personal portfolio for Abhi — CS student and Teaching Assistant at Northeastern University Miami.
 Targeting Full Stack Developer / SDE roles. Built to impress hiring managers and recruiting talent.
 Stack: Next.js 16, TypeScript, Tailwind CSS v4, Three.js / React Three Fiber, GSAP, Framer Motion,
-Supabase, Anthropic API (Claude), Resend. Deployed on Vercel.
+Groq (AI chat backend), Resend (contact email). Deployed on Vercel.
+
+> Note: "Anthropic API" and "Supabase" still appear in portfolio *content* (Skills, About,
+> Projects, the chat system prompt) as Abhi's skills / past project stacks — that is
+> intentional and unrelated to this repo's runtime stack. The AI Chat *backend* runs on Groq
+> (`groq-sdk`, model `llama-3.1-8b-instant`); the contact form delivers via Resend only.
 
 ## Commands
 
@@ -19,7 +26,7 @@ Supabase, Anthropic API (Claude), Resend. Deployed on Vercel.
 - `npm run build` — production build
 - `npm run start` — serve the production build
 - `npm run lint` — run ESLint
-- `npm run typecheck` — tsc --noEmit (add this script if missing)
+- `npm run typecheck` — tsc --noEmit
 
 There is no test setup yet.
 
@@ -30,8 +37,11 @@ There is no test setup yet.
 - **TypeScript**: `strict` mode; import alias `@/*` maps to `src/*`. No `any` types ever.
 - **ESLint**: flat config (`eslint.config.mjs`).
 - **Three.js scenes**: wrapped in React Three Fiber (`<Canvas>`), always lazy-loaded with `dynamic({ ssr: false })`.
-- **Supabase client**: singleton in `src/lib/supabase.ts`.
-- **API routes**: live in `src/app/api/`. Use Edge Runtime where possible.
+- **API routes**: live in `src/app/api/` and run on the Edge Runtime (`export const runtime = "edge"`).
+  - `api/chat` — POST `{ message }` → Groq chat completion → `{ reply }`. In-memory per-IP rate limit.
+  - `api/contact` — POST `{ name, email, subject, message }` → sends an email via Resend to
+    `CONTACT_EMAIL`. Best-effort per-IP rate limit.
+  - Rate limiting uses an in-memory `Map`, so it is best-effort per Edge instance, not a global limit.
 
 ## Code Style
 
@@ -62,8 +72,7 @@ There is no test setup yet.
 
 - Never commit secrets or API keys
 - All secrets in `.env.local`, referenced via `process.env.VARIABLE_NAME`
-- Supabase anon key is safe to expose; service role key is never exposed to the client
-- Anthropic API key is server-side only, never in client components
+- AI provider key (`GROQ_API_KEY`) and Resend key are server-side only, never in client components
 
 ## Git Workflow
 
@@ -72,22 +81,26 @@ There is no test setup yet.
 - Run `npm run lint` and `npm run typecheck` before committing
 - Use `/compact` after completing each phase to keep context fresh
 
-## Sections to Build (in order)
+## Sections (all built — `src/components/sections/`)
+
+Rendered in this order by `src/app/page.tsx`:
 
 1. **Hero** — Three.js / R3F scene with liquid glass name card, GSAP text reveal
 2. **About** — Glass card, animated stats (student, TA, hackathon finalist)
 3. **Projects** — Filterable grid, Doly platform and NUGIC finalist featured prominently
 4. **Skills** — Animated tech stack visualization
-5. **Experience** — TA timeline (CS5800 Algorithms, OOD under Prof. Zhu at Northeastern Miami)
-6. **AI Chat** — "Ask Claude about Abhi" recruiter-facing AI powered by Anthropic API
-7. **Contact** — Form with Resend email delivery, submissions logged to Supabase
+5. **Experience** — TA timeline (CS 5800 Algorithms, CS 5004 OOD at Northeastern Miami)
+6. **AIChat** — recruiter-facing "Ask About Me" chat, backed by `api/chat` (Groq)
+7. **Contact** — Form posting to `api/contact` (Resend email delivery)
+
+Known follow-ups: replace placeholder links in `Projects.tsx` (GitHub/Live Demo) and the
+LinkedIn URL in `Contact.tsx` with real values.
 
 ## Environment Variables Needed
 
 ```
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-SUPABASE_SERVICE_ROLE_KEY=
-ANTHROPIC_API_KEY=
-RESEND_API_KEY=
+GROQ_API_KEY=                    # api/chat (AI chat backend)
+RESEND_API_KEY=                  # api/contact email delivery
+CONTACT_EMAIL=                   # api/contact recipient (never hardcoded)
+CONTACT_FROM_EMAIL=              # optional; defaults to onboarding@resend.dev sandbox sender
 ```
