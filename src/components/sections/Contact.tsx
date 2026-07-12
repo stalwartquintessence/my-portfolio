@@ -43,8 +43,8 @@ const CONTACT_LINKS: ContactLink[] = [
   },
   {
     label: "LinkedIn",
-    value: "linkedin.com/in/placeholder",
-    href: "https://linkedin.com/in/placeholder",
+    value: "linkedin.com/in/abhishek-amkamgari-23b854219",
+    href: "https://www.linkedin.com/in/abhishek-amkamgari-23b854219/",
     icon: (
       <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3V9zm6 0h3.83v1.64h.05c.53-1 1.84-2.06 3.79-2.06 4.05 0 4.8 2.67 4.8 6.14V21h-4v-5.4c0-1.29-.02-2.95-1.8-2.95-1.8 0-2.07 1.4-2.07 2.85V21H9V9z" />
     ),

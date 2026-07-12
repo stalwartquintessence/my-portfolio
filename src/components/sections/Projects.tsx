@@ -36,7 +36,6 @@ interface Project {
   demo?: string;
 }
 
-// Links are placeholders (#) until the real repo/demo URLs are supplied.
 const PROJECTS: Project[] = [
   {
     title: "Doly",
@@ -46,7 +45,7 @@ const PROJECTS: Project[] = [
     categories: ["Legal Tech", "Full Stack", "AI"],
     tech: ["Next.js", "TypeScript", "Supabase", "Groq AI", "Vercel"],
     badge: "NUGIC Finalist",
-    github: "#",
+    github: "https://github.com/GeorgeDavidson2/Doly_Dentons",
     demo: "#",
   },
   {
@@ -56,6 +55,7 @@ const PROJECTS: Project[] = [
       "Gamification platform built during CS 6966 Practicum for KidzHack. Engagement mechanics, real-time leaderboards, and reward systems.",
     categories: ["Full Stack"],
     tech: ["React", "Node.js", "PostgreSQL", "Redis"],
+    // TODO: replace with the real Vibes repository URL once available.
     github: "#",
   },
   {
@@ -65,6 +65,7 @@ const PROJECTS: Project[] = [
       "Commercial real estate platform for Gorin Systems. Property listings, advanced search, and broker management tools.",
     categories: ["Full Stack"],
     tech: ["React", "TypeScript", "Node.js", "PostgreSQL"],
+    // TODO: replace with the real SellCRE repository URL once available.
     github: "#",
   },
   {
@@ -74,7 +75,7 @@ const PROJECTS: Project[] = [
       "Deep learning models for early detection of Parkinson's disease and breast cancer using medical imaging and signal processing.",
     categories: ["AI/ML", "Healthcare"],
     tech: ["Python", "TensorFlow", "Medical Imaging"],
-    github: "#",
+    github: "https://github.com/stalwartquintessence",
   },
   {
     title: "Serverless Cloud Architecture",
@@ -83,7 +84,7 @@ const PROJECTS: Project[] = [
       "Scalable serverless application on AWS with Lambda, API Gateway, S3, and automated CI/CD pipelines via GitHub Actions.",
     categories: ["Full Stack"],
     tech: ["AWS Lambda", "API Gateway", "S3", "Docker", "GitHub Actions"],
-    github: "#",
+    github: "https://github.com/CloudComputingMIA2025/team_awj",
   },
 ];
 

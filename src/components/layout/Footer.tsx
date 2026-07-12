@@ -6,7 +6,7 @@ const SOCIAL_LINKS = [
   },
   {
     label: "LinkedIn",
-    href: "https://www.linkedin.com/in/abhi",
+    href: "https://www.linkedin.com/in/abhishek-amkamgari-23b854219/",
     ariaLabel: "Abhi's LinkedIn profile",
   },
 ] as const;
