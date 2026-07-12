@@ -225,63 +225,65 @@ export default function Projects() {
     <section
       id="projects"
       aria-label="Projects"
-      className="relative isolate mx-auto w-full max-w-6xl scroll-mt-20 overflow-hidden px-6 py-28 sm:py-36"
+      className="relative isolate w-full scroll-mt-20 overflow-hidden py-28 sm:py-36"
     >
       <BloomOrbs orbs={ORBS} />
 
-      <motion.div
-        initial={{ opacity: 0, y: 28 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="mb-12 text-center"
-      >
-        <h2 className="inline-block text-3xl font-bold tracking-tight text-cream sm:text-4xl">
-          Projects
-          <span className="mt-3 block h-1 w-16 rounded-full bg-accent" />
-        </h2>
-      </motion.div>
+      <div className="mx-auto w-full max-w-6xl px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="mb-12 text-center"
+        >
+          <h2 className="inline-block text-3xl font-bold tracking-tight text-cream sm:text-4xl">
+            Projects
+            <span className="mt-3 block h-1 w-16 rounded-full bg-accent" />
+          </h2>
+        </motion.div>
 
-      {/* Filter bar */}
-      <div
-        role="group"
-        aria-label="Filter projects by category"
-        className="mb-12 flex flex-wrap justify-center gap-3"
-      >
-        {FILTERS.map((filter) => {
-          const isActive = activeFilter === filter;
-          return (
-            <button
-              key={filter}
-              type="button"
-              onClick={() => setActiveFilter(filter)}
-              aria-pressed={isActive}
-              className={`rounded-full px-5 py-2 text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 ${
-                isActive
-                  ? "bg-accent text-background shadow-[0_0_24px_rgba(41,151,255,0.4)]"
-                  : "glass border border-white/15 text-foreground/80 hover:border-accent/40 hover:text-cream"
-              }`}
-            >
-              {filter}
-            </button>
-          );
-        })}
+        {/* Filter bar */}
+        <div
+          role="group"
+          aria-label="Filter projects by category"
+          className="mb-12 flex flex-wrap justify-center gap-3"
+        >
+          {FILTERS.map((filter) => {
+            const isActive = activeFilter === filter;
+            return (
+              <button
+                key={filter}
+                type="button"
+                onClick={() => setActiveFilter(filter)}
+                aria-pressed={isActive}
+                className={`rounded-full px-5 py-2 text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 ${
+                  isActive
+                    ? "bg-accent text-background shadow-[0_0_24px_rgba(41,151,255,0.4)]"
+                    : "glass border border-white/15 text-foreground/80 hover:border-accent/40 hover:text-cream"
+                }`}
+              >
+                {filter}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Project grid. Keyed by the active filter so the list remounts cleanly
+            on each change and re-runs the staggered reveal. */}
+        <motion.div
+          key={activeFilter}
+          variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-60px" }}
+          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        >
+          {filtered.map((project) => (
+            <ProjectCard key={project.title} project={project} />
+          ))}
+        </motion.div>
       </div>
-
-      {/* Project grid. Keyed by the active filter so the list remounts cleanly
-          on each change and re-runs the staggered reveal. */}
-      <motion.div
-        key={activeFilter}
-        variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08 } } }}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true, margin: "-60px" }}
-        className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-      >
-        {filtered.map((project) => (
-          <ProjectCard key={project.title} project={project} />
-        ))}
-      </motion.div>
     </section>
   );
 }

@@ -118,36 +118,38 @@ export default function Skills() {
     <section
       id="skills"
       aria-label="Skills"
-      className="relative isolate mx-auto w-full max-w-6xl scroll-mt-20 overflow-hidden px-6 py-28 sm:py-36"
+      className="relative isolate w-full scroll-mt-20 overflow-hidden py-28 sm:py-36"
     >
       <BloomOrbs orbs={ORBS} />
 
-      <motion.div {...fadeIn} className="mb-14 text-center sm:mb-20">
-        <h2 className="inline-block text-3xl font-bold tracking-tight text-cream sm:text-4xl">
-          Skills
-          <span className="mt-3 block h-1 w-16 rounded-full bg-accent" />
-        </h2>
-      </motion.div>
+      <div className="mx-auto w-full max-w-6xl px-6">
+        <motion.div {...fadeIn} className="mb-14 text-center sm:mb-20">
+          <h2 className="inline-block text-3xl font-bold tracking-tight text-cream sm:text-4xl">
+            Skills
+            <span className="mt-3 block h-1 w-16 rounded-full bg-accent" />
+          </h2>
+        </motion.div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        {CATEGORIES.map((category, categoryIndex) => (
-          <motion.div
-            key={category.title}
-            {...fadeIn}
-            transition={{ ...fadeIn.transition, delay: categoryIndex * 0.08 }}
-          >
-            <GlassCard className="h-full p-8 sm:p-10">
-              <h3 className="text-xl font-semibold text-cream">
-                {category.title}
-              </h3>
-              <ul className="mt-6 flex flex-col gap-5">
-                {category.skills.map((skill, index) => (
-                  <SkillBar key={skill.name} skill={skill} index={index} />
-                ))}
-              </ul>
-            </GlassCard>
-          </motion.div>
-        ))}
+        <div className="grid gap-6 lg:grid-cols-2">
+          {CATEGORIES.map((category, categoryIndex) => (
+            <motion.div
+              key={category.title}
+              {...fadeIn}
+              transition={{ ...fadeIn.transition, delay: categoryIndex * 0.08 }}
+            >
+              <GlassCard className="h-full p-8 sm:p-10">
+                <h3 className="text-xl font-semibold text-cream">
+                  {category.title}
+                </h3>
+                <ul className="mt-6 flex flex-col gap-5">
+                  {category.skills.map((skill, index) => (
+                    <SkillBar key={skill.name} skill={skill} index={index} />
+                  ))}
+                </ul>
+              </GlassCard>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );

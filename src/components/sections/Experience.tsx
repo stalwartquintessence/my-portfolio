@@ -158,32 +158,34 @@ export default function Experience() {
     <section
       id="experience"
       aria-label="Experience"
-      className="relative isolate mx-auto w-full max-w-5xl scroll-mt-20 overflow-hidden px-6 py-28 sm:py-36"
+      className="relative isolate w-full scroll-mt-20 overflow-hidden py-28 sm:py-36"
     >
       <BloomOrbs orbs={ORBS} />
 
-      <motion.div {...fadeIn} className="mb-14 text-center sm:mb-20">
-        <h2 className="inline-block text-3xl font-bold tracking-tight text-cream sm:text-4xl">
-          Experience
-          <span className="mt-3 block h-1 w-16 rounded-full bg-accent" />
-        </h2>
-      </motion.div>
+      <div className="mx-auto w-full max-w-5xl px-6">
+        <motion.div {...fadeIn} className="mb-14 text-center sm:mb-20">
+          <h2 className="inline-block text-3xl font-bold tracking-tight text-cream sm:text-4xl">
+            Experience
+            <span className="mt-3 block h-1 w-16 rounded-full bg-accent" />
+          </h2>
+        </motion.div>
 
-      {/* The rail: a vertical line on the left (mobile) / center (desktop). */}
-      <div className="relative pl-8 md:pl-0">
-        <span
-          aria-hidden="true"
-          className="absolute top-0 bottom-0 left-2 w-px bg-gradient-to-b from-transparent via-accent/40 to-transparent md:left-1/2 md:-translate-x-1/2"
-        />
+        {/* The rail: a vertical line on the left (mobile) / center (desktop). */}
+        <div className="relative pl-8 md:pl-0">
+          <span
+            aria-hidden="true"
+            className="absolute top-0 bottom-0 left-2 w-px bg-gradient-to-b from-transparent via-accent/40 to-transparent md:left-1/2 md:-translate-x-1/2"
+          />
 
-        <div className="flex flex-col gap-14 sm:gap-16">
-          {ENTRIES.map((entry, index) => (
-            <TimelineEntry
-              key={entry.role}
-              entry={entry}
-              side={index % 2 === 0 ? "left" : "right"}
-            />
-          ))}
+          <div className="flex flex-col gap-14 sm:gap-16">
+            {ENTRIES.map((entry, index) => (
+              <TimelineEntry
+                key={entry.role}
+                entry={entry}
+                side={index % 2 === 0 ? "left" : "right"}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

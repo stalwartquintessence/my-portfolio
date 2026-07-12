@@ -155,67 +155,69 @@ export default function About() {
     <section
       id="about"
       aria-label="About Me"
-      className="relative isolate mx-auto w-full max-w-6xl scroll-mt-20 overflow-hidden px-6 py-28 sm:py-36"
+      className="relative isolate w-full scroll-mt-20 overflow-hidden py-28 sm:py-36"
     >
       <BloomOrbs orbs={ORBS} />
 
-      <motion.div {...fadeIn} className="mb-14 text-center sm:mb-20">
-        <h2 className="inline-block text-3xl font-bold tracking-tight text-cream sm:text-4xl">
-          About Me
-          <span className="mt-3 block h-1 w-16 rounded-full bg-accent" />
-        </h2>
-      </motion.div>
-
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Left column: bio + animated stats */}
-        <motion.div
-          {...fadeIn}
-          transition={{ ...fadeIn.transition, delay: 0.05 }}
-          className="flex flex-col gap-6"
-        >
-          <GlassCard className="p-8 sm:p-10">
-            <p className="text-base leading-relaxed text-foreground/80 sm:text-lg">
-              {BIO}
-            </p>
-          </GlassCard>
-
-          <GlassCard className="p-8 sm:p-10">
-            <div className="grid grid-cols-3 gap-4">
-              {STATS.map((stat) => (
-                <StatCounter key={stat.label} stat={stat} />
-              ))}
-            </div>
-          </GlassCard>
+      <div className="mx-auto w-full max-w-6xl px-6">
+        <motion.div {...fadeIn} className="mb-14 text-center sm:mb-20">
+          <h2 className="inline-block text-3xl font-bold tracking-tight text-cream sm:text-4xl">
+            About Me
+            <span className="mt-3 block h-1 w-16 rounded-full bg-accent" />
+          </h2>
         </motion.div>
 
-        {/* Right column: "What I Do" capability list */}
-        <motion.div
-          {...fadeIn}
-          transition={{ ...fadeIn.transition, delay: 0.1 }}
-        >
-          <GlassCard className="h-full p-8 sm:p-10">
-            <h3 className="text-xl font-semibold text-cream">What I Do</h3>
-            <ul className="mt-6 flex flex-col gap-3">
-              {CAPABILITIES.map((capability) => (
-                <li key={capability.title}>
-                  <div className="group flex items-start gap-4 rounded-xl border border-transparent p-3 transition-all duration-300 hover:border-accent/30 hover:bg-accent/5">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-accent/30 bg-accent/10 text-accent transition-colors duration-300 group-hover:bg-accent/20">
-                      {capability.icon}
-                    </span>
-                    <span>
-                      <span className="block font-medium text-cream">
-                        {capability.title}
+        <div className="grid gap-6 lg:grid-cols-2">
+          {/* Left column: bio + animated stats */}
+          <motion.div
+            {...fadeIn}
+            transition={{ ...fadeIn.transition, delay: 0.05 }}
+            className="flex flex-col gap-6"
+          >
+            <GlassCard className="p-8 sm:p-10">
+              <p className="text-base leading-relaxed text-foreground/80 sm:text-lg">
+                {BIO}
+              </p>
+            </GlassCard>
+
+            <GlassCard className="p-8 sm:p-10">
+              <div className="grid grid-cols-3 gap-4">
+                {STATS.map((stat) => (
+                  <StatCounter key={stat.label} stat={stat} />
+                ))}
+              </div>
+            </GlassCard>
+          </motion.div>
+
+          {/* Right column: "What I Do" capability list */}
+          <motion.div
+            {...fadeIn}
+            transition={{ ...fadeIn.transition, delay: 0.1 }}
+          >
+            <GlassCard className="h-full p-8 sm:p-10">
+              <h3 className="text-xl font-semibold text-cream">What I Do</h3>
+              <ul className="mt-6 flex flex-col gap-3">
+                {CAPABILITIES.map((capability) => (
+                  <li key={capability.title}>
+                    <div className="group flex items-start gap-4 rounded-xl border border-transparent p-3 transition-all duration-300 hover:border-accent/30 hover:bg-accent/5">
+                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-accent/30 bg-accent/10 text-accent transition-colors duration-300 group-hover:bg-accent/20">
+                        {capability.icon}
                       </span>
-                      <span className="mt-0.5 block text-sm text-foreground/60">
-                        {capability.detail}
+                      <span>
+                        <span className="block font-medium text-cream">
+                          {capability.title}
+                        </span>
+                        <span className="mt-0.5 block text-sm text-foreground/60">
+                          {capability.detail}
+                        </span>
                       </span>
-                    </span>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </GlassCard>
-        </motion.div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </GlassCard>
+          </motion.div>
+        </div>
       </div>
     </section>
   );

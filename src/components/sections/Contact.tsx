@@ -105,190 +105,192 @@ export default function Contact() {
     <section
       id="contact"
       aria-label="Get In Touch"
-      className="relative isolate mx-auto w-full max-w-5xl scroll-mt-20 overflow-hidden px-6 py-28 sm:py-36"
+      className="relative isolate w-full scroll-mt-20 overflow-hidden py-28 sm:py-36"
     >
       <BloomOrbs orbs={ORBS} />
 
-      <motion.div {...fadeIn} className="mb-12 text-center sm:mb-16">
-        <h2 className="inline-block text-3xl font-bold tracking-tight text-cream sm:text-4xl">
-          Get In Touch
-          <span className="mt-3 block h-1 w-16 rounded-full bg-accent" />
-        </h2>
-        <p className="mx-auto mt-5 max-w-xl text-sm text-foreground/60 sm:text-base">
-          I&apos;m currently open to Full Stack and SDE internship/co-op
-          opportunities. Let&apos;s talk.
-        </p>
-      </motion.div>
-
-      <div className="grid gap-6 md:grid-cols-2">
-        {/* Left — connect / links */}
-        <motion.div {...fadeIn}>
-          <GlassCard className="flex h-full flex-col p-6 sm:p-8">
-            <h3 className="text-xl font-semibold text-cream">Let&apos;s Connect</h3>
-            <p className="mt-3 text-sm leading-relaxed text-foreground/70">
-              Whether you&apos;re a recruiter, collaborator, or just want to say
-              hi — my inbox is always open.
-            </p>
-
-            <ul className="mt-8 flex flex-col gap-5">
-              {CONTACT_LINKS.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group flex items-center gap-4 rounded-xl outline-none transition-colors focus-visible:ring-2 focus-visible:ring-accent/60"
-                    aria-label={`${link.label}: ${link.value}`}
-                  >
-                    <span className="glass inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/15 text-accent transition-all duration-300 group-hover:border-accent/50 group-hover:bg-accent/10">
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        aria-hidden="true"
-                        className="h-5 w-5"
-                      >
-                        {link.icon}
-                      </svg>
-                    </span>
-                    <span className="flex flex-col">
-                      <span className="text-xs uppercase tracking-wide text-foreground/50">
-                        {link.label}
-                      </span>
-                      <span className="text-sm text-foreground/90 transition-colors group-hover:text-cream">
-                        {link.value}
-                      </span>
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </GlassCard>
+      <div className="mx-auto w-full max-w-5xl px-6">
+        <motion.div {...fadeIn} className="mb-12 text-center sm:mb-16">
+          <h2 className="inline-block text-3xl font-bold tracking-tight text-cream sm:text-4xl">
+            Get In Touch
+            <span className="mt-3 block h-1 w-16 rounded-full bg-accent" />
+          </h2>
+          <p className="mx-auto mt-5 max-w-xl text-sm text-foreground/60 sm:text-base">
+            I&apos;m currently open to Full Stack and SDE internship/co-op
+            opportunities. Let&apos;s talk.
+          </p>
         </motion.div>
 
-        {/* Right — contact form */}
-        <motion.div {...fadeIn}>
-          <GlassCard className="h-full p-6 sm:p-8">
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
-              <div className="flex flex-col gap-1.5">
-                <label htmlFor="contact-name" className="text-xs font-medium uppercase tracking-wide text-foreground/60">
-                  Name
-                </label>
-                <input
-                  id="contact-name"
-                  type="text"
-                  required
-                  autoComplete="name"
-                  value={form.name}
-                  onChange={(e) => updateField("name", e.target.value)}
-                  disabled={isLoading}
-                  placeholder="Your name"
-                  className={INPUT_CLASS}
-                />
-              </div>
+        <div className="grid gap-6 md:grid-cols-2">
+          {/* Left — connect / links */}
+          <motion.div {...fadeIn}>
+            <GlassCard className="flex h-full flex-col p-6 sm:p-8">
+              <h3 className="text-xl font-semibold text-cream">Let&apos;s Connect</h3>
+              <p className="mt-3 text-sm leading-relaxed text-foreground/70">
+                Whether you&apos;re a recruiter, collaborator, or just want to say
+                hi — my inbox is always open.
+              </p>
 
-              <div className="flex flex-col gap-1.5">
-                <label htmlFor="contact-email" className="text-xs font-medium uppercase tracking-wide text-foreground/60">
-                  Email
-                </label>
-                <input
-                  id="contact-email"
-                  type="email"
-                  required
-                  autoComplete="email"
-                  value={form.email}
-                  onChange={(e) => updateField("email", e.target.value)}
-                  disabled={isLoading}
-                  placeholder="you@company.com"
-                  className={INPUT_CLASS}
-                />
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <label htmlFor="contact-subject" className="text-xs font-medium uppercase tracking-wide text-foreground/60">
-                  Subject
-                </label>
-                <input
-                  id="contact-subject"
-                  type="text"
-                  required
-                  value={form.subject}
-                  onChange={(e) => updateField("subject", e.target.value)}
-                  disabled={isLoading}
-                  placeholder="What's this about?"
-                  className={INPUT_CLASS}
-                />
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <label htmlFor="contact-message" className="text-xs font-medium uppercase tracking-wide text-foreground/60">
-                  Message
-                </label>
-                <textarea
-                  id="contact-message"
-                  required
-                  rows={4}
-                  value={form.message}
-                  onChange={(e) => updateField("message", e.target.value)}
-                  disabled={isLoading}
-                  placeholder="Tell me a little about the opportunity…"
-                  className={`${INPUT_CLASS} resize-y`}
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="glass mt-2 inline-flex items-center justify-center gap-2 rounded-xl border border-accent/40 bg-accent/10 px-5 py-3 text-sm font-semibold text-cream transition-all duration-300 hover:border-accent hover:bg-accent hover:text-background hover:shadow-[0_0_24px_rgba(41,151,255,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                {isLoading ? (
-                  <>
-                    <svg
-                      className="h-4 w-4 animate-spin"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      aria-hidden="true"
+              <ul className="mt-8 flex flex-col gap-5">
+                {CONTACT_LINKS.map((link) => (
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-center gap-4 rounded-xl outline-none transition-colors focus-visible:ring-2 focus-visible:ring-accent/60"
+                      aria-label={`${link.label}: ${link.value}`}
                     >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      />
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 0 1 8-8V0C5.37 0 0 5.37 0 12h4z"
-                      />
-                    </svg>
-                    Sending…
-                  </>
-                ) : (
-                  "Send Message"
+                      <span className="glass inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-white/15 text-accent transition-all duration-300 group-hover:border-accent/50 group-hover:bg-accent/10">
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          aria-hidden="true"
+                          className="h-5 w-5"
+                        >
+                          {link.icon}
+                        </svg>
+                      </span>
+                      <span className="flex flex-col">
+                        <span className="text-xs uppercase tracking-wide text-foreground/50">
+                          {link.label}
+                        </span>
+                        <span className="text-sm text-foreground/90 transition-colors group-hover:text-cream">
+                          {link.value}
+                        </span>
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </GlassCard>
+          </motion.div>
+
+          {/* Right — contact form */}
+          <motion.div {...fadeIn}>
+            <GlassCard className="h-full p-6 sm:p-8">
+              <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
+                <div className="flex flex-col gap-1.5">
+                  <label htmlFor="contact-name" className="text-xs font-medium uppercase tracking-wide text-foreground/60">
+                    Name
+                  </label>
+                  <input
+                    id="contact-name"
+                    type="text"
+                    required
+                    autoComplete="name"
+                    value={form.name}
+                    onChange={(e) => updateField("name", e.target.value)}
+                    disabled={isLoading}
+                    placeholder="Your name"
+                    className={INPUT_CLASS}
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label htmlFor="contact-email" className="text-xs font-medium uppercase tracking-wide text-foreground/60">
+                    Email
+                  </label>
+                  <input
+                    id="contact-email"
+                    type="email"
+                    required
+                    autoComplete="email"
+                    value={form.email}
+                    onChange={(e) => updateField("email", e.target.value)}
+                    disabled={isLoading}
+                    placeholder="you@company.com"
+                    className={INPUT_CLASS}
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label htmlFor="contact-subject" className="text-xs font-medium uppercase tracking-wide text-foreground/60">
+                    Subject
+                  </label>
+                  <input
+                    id="contact-subject"
+                    type="text"
+                    required
+                    value={form.subject}
+                    onChange={(e) => updateField("subject", e.target.value)}
+                    disabled={isLoading}
+                    placeholder="What's this about?"
+                    className={INPUT_CLASS}
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label htmlFor="contact-message" className="text-xs font-medium uppercase tracking-wide text-foreground/60">
+                    Message
+                  </label>
+                  <textarea
+                    id="contact-message"
+                    required
+                    rows={4}
+                    value={form.message}
+                    onChange={(e) => updateField("message", e.target.value)}
+                    disabled={isLoading}
+                    placeholder="Tell me a little about the opportunity…"
+                    className={`${INPUT_CLASS} resize-y`}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="glass mt-2 inline-flex items-center justify-center gap-2 rounded-xl border border-accent/40 bg-accent/10 px-5 py-3 text-sm font-semibold text-cream transition-all duration-300 hover:border-accent hover:bg-accent hover:text-background hover:shadow-[0_0_24px_rgba(41,151,255,0.4)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {isLoading ? (
+                    <>
+                      <svg
+                        className="h-4 w-4 animate-spin"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 0 1 8-8V0C5.37 0 0 5.37 0 12h4z"
+                        />
+                      </svg>
+                      Sending…
+                    </>
+                  ) : (
+                    "Send Message"
+                  )}
+                </button>
+
+                {status === "success" && (
+                  <p
+                    role="status"
+                    className="rounded-lg border border-accent/30 bg-accent/10 px-3 py-2 text-sm text-accent"
+                  >
+                    Message sent! I&apos;ll get back to you soon.
+                  </p>
                 )}
-              </button>
 
-              {status === "success" && (
-                <p
-                  role="status"
-                  className="rounded-lg border border-accent/30 bg-accent/10 px-3 py-2 text-sm text-accent"
-                >
-                  Message sent! I&apos;ll get back to you soon.
-                </p>
-              )}
-
-              {status === "error" && (
-                <p
-                  role="alert"
-                  className="rounded-lg border border-red-400/30 bg-red-500/10 px-3 py-2 text-sm text-red-300"
-                >
-                  Something went wrong. Please try again.
-                </p>
-              )}
-            </form>
-          </GlassCard>
-        </motion.div>
+                {status === "error" && (
+                  <p
+                    role="alert"
+                    className="rounded-lg border border-red-400/30 bg-red-500/10 px-3 py-2 text-sm text-red-300"
+                  >
+                    Something went wrong. Please try again.
+                  </p>
+                )}
+              </form>
+            </GlassCard>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
