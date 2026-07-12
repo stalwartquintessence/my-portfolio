@@ -12,22 +12,22 @@ const HERO_ORBS: BloomOrb[] = [
   {
     color: "purple",
     drift: "a",
-    className: "-left-40 -top-40 h-[680px] w-[680px] opacity-[0.22] blur-[120px]",
+    className: "-left-40 -top-40 h-[816px] w-[816px] opacity-[0.35] blur-[120px]",
   },
   {
     color: "blue",
     drift: "b",
-    className: "-right-40 -top-32 h-[640px] w-[640px] opacity-[0.20] blur-[120px]",
+    className: "-right-40 -top-32 h-[768px] w-[768px] opacity-[0.32] blur-[120px]",
   },
   {
     color: "pink",
     drift: "c",
-    className: "-left-32 -bottom-40 h-[600px] w-[600px] opacity-[0.18] blur-[120px]",
+    className: "-left-32 -bottom-40 h-[720px] w-[720px] opacity-[0.30] blur-[120px]",
   },
   {
     color: "teal",
     drift: "d",
-    className: "-right-40 -bottom-40 h-[760px] w-[760px] opacity-[0.16] blur-[120px]",
+    className: "-right-40 -bottom-40 h-[912px] w-[912px] opacity-[0.28] blur-[120px]",
   },
 ];
 

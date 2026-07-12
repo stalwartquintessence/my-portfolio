@@ -8,12 +8,12 @@ const ORBS: BloomOrb[] = [
   {
     color: "blue",
     drift: "b",
-    className: "-left-32 -top-24 h-[400px] w-[400px] opacity-[0.13] blur-[100px]",
+    className: "-left-32 -top-24 h-[480px] w-[480px] opacity-[0.30] blur-[100px]",
   },
   {
     color: "pink",
     drift: "d",
-    className: "-right-32 bottom-0 h-[380px] w-[380px] opacity-[0.11] blur-[100px]",
+    className: "-right-32 bottom-0 h-[456px] w-[456px] opacity-[0.27] blur-[100px]",
   },
 ];
 
