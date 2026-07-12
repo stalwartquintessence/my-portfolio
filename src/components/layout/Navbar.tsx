@@ -27,30 +27,19 @@ export default function Navbar() {
           Abhi
         </a>
 
-        {/* Desktop links + resume pill */}
-        <div className="hidden items-center gap-8 md:flex">
-          <ul className="flex items-center gap-8">
-            {NAV_LINKS.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  className="text-sm text-foreground/70 transition-colors hover:text-accent"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-          <a
-            href="/resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Download résumé (PDF)"
-            className="glass inline-flex items-center gap-1.5 rounded-full border border-accent/40 bg-accent/15 px-4 py-1.5 text-sm font-medium text-accent transition-all duration-300 hover:border-accent/70 hover:bg-accent/25 hover:text-cream hover:shadow-[0_0_20px_rgba(41,151,255,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
-          >
-            Resume
-          </a>
-        </div>
+        {/* Desktop links */}
+        <ul className="hidden items-center gap-8 md:flex">
+          {NAV_LINKS.map((link) => (
+            <li key={link.href}>
+              <a
+                href={link.href}
+                className="text-sm text-foreground/70 transition-colors hover:text-accent"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
 
         {/* Mobile hamburger */}
         <button
@@ -98,18 +87,6 @@ export default function Navbar() {
               </a>
             </li>
           ))}
-          <li className="mt-2">
-            <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setIsMenuOpen(false)}
-              aria-label="Download résumé (PDF)"
-              className="glass block rounded-full border border-accent/40 bg-accent/15 px-4 py-3 text-center text-base font-medium text-accent transition-colors hover:bg-accent/25 hover:text-cream"
-            >
-              Resume
-            </a>
-          </li>
         </ul>
       )}
     </header>
