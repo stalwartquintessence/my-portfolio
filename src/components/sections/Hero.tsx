@@ -31,24 +31,27 @@ const HERO_ORBS: BloomOrb[] = [
   },
 ];
 
-// Small glass pills floating around the hero card. Positions are anchored to
-// the section edges; each pill drifts on its own timing so the cluster feels
-// organic. Hidden on mobile (the card fills the viewport there).
+// Small glass pills floating around the hero card. Each pill drifts on its own
+// timing so the cluster feels organic. Hidden on mobile (the card fills the
+// viewport there).
 interface TechBadge {
   label: string;
-  /** Tailwind absolute-position classes, relative to the section. */
+  /** Tailwind absolute-position classes, relative to the card wrapper. */
   position: string;
   /** Float animation variant + timing class. */
   float: string;
 }
 
+// Positions are anchored to the card wrapper (not the viewport) with small
+// negative offsets, so each pill hugs just outside the card edge and reads as
+// belonging to the card rather than drifting across the screen.
 const TECH_BADGES: TechBadge[] = [
-  { label: "Next.js", position: "left-[10%] top-[24%]", float: "tech-badge--1" },
-  { label: "TypeScript", position: "right-[9%] top-[20%]", float: "tech-badge--2" },
-  { label: "React", position: "left-[6%] top-1/2", float: "tech-badge--3" },
-  { label: "Node.js", position: "right-[7%] top-[58%]", float: "tech-badge--4" },
-  { label: "AI/ML", position: "left-[15%] bottom-[22%]", float: "tech-badge--5" },
-  { label: "Three.js", position: "right-[14%] bottom-[20%]", float: "tech-badge--6" },
+  { label: "Next.js", position: "-left-10 top-14", float: "tech-badge--1" },
+  { label: "TypeScript", position: "-right-10 top-14", float: "tech-badge--2" },
+  { label: "React", position: "-left-16 top-[45%]", float: "tech-badge--3" },
+  { label: "Node.js", position: "-right-16 top-1/2", float: "tech-badge--4" },
+  { label: "AI/ML", position: "-left-8 bottom-16", float: "tech-badge--5" },
+  { label: "Three.js", position: "-right-8 bottom-16", float: "tech-badge--6" },
 ];
 
 const TITLE = "Hi, I'm Abhi";
@@ -121,73 +124,77 @@ export default function Hero() {
       {/* Ambient color blooms, pinned behind everything (-z-10). */}
       <BloomOrbs orbs={HERO_ORBS} />
 
-      {/* Floating tech pills orbiting the card. Decorative, desktop-only. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-[5] hidden md:block"
-      >
-        {TECH_BADGES.map((badge) => (
-          <span
-            key={badge.label}
-            className={`hero-badge tech-badge glass absolute rounded-full border border-white/15 px-4 py-2 text-xs font-medium text-foreground/80 shadow-[0_4px_20px_rgba(0,0,0,0.35)] ${badge.position} ${badge.float}`}
-          >
-            {badge.label}
-          </span>
-        ))}
-      </div>
+      {/* Card + its orbiting tech pills share one sized wrapper so the pills
+          are positioned relative to the card, not the viewport. */}
+      <div className="relative z-10 w-full max-w-2xl">
+        {/* Floating tech pills hugging the card edges. Decorative, desktop-only. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-[5] hidden md:block"
+        >
+          {TECH_BADGES.map((badge) => (
+            <span
+              key={badge.label}
+              className={`hero-badge tech-badge glass absolute rounded-full border border-white/15 px-4 py-2 text-xs font-medium text-foreground/80 shadow-[0_4px_20px_rgba(0,0,0,0.35)] ${badge.position} ${badge.float}`}
+            >
+              {badge.label}
+            </span>
+          ))}
+        </div>
 
-      <GlassCard className="relative z-10 max-w-2xl px-8 py-12 text-center sm:px-12 sm:py-16">
-        {/* Memoji: soft bloom glow + rotating iridescent ring + bobbing image. */}
-        <div className="hero-memoji relative mx-auto mb-8 h-[180px] w-[180px]">
-          <span aria-hidden="true" className="memoji-glow" />
-          <div className="memoji-bob relative h-full w-full">
-            <div className="memoji-ring h-full w-full">
-              <div className="memoji-inner flex h-full w-full items-center justify-center">
-                <Image
-                  src="/memoji.png"
-                  alt="Abhi's Memoji avatar"
-                  width={180}
-                  height={180}
-                  priority
-                  className="h-full w-full object-contain"
-                />
+        <GlassCard className="w-full px-8 py-12 text-center sm:px-12 sm:py-16">
+          {/* Memoji: soft bloom glow + rotating iridescent ring + bobbing image. */}
+          <div className="hero-memoji relative mx-auto mb-8 h-[180px] w-[180px]">
+            <span aria-hidden="true" className="memoji-glow" />
+            <div className="memoji-bob relative h-full w-full">
+              <div className="memoji-ring h-full w-full">
+                <div className="memoji-inner flex h-full w-full items-center justify-center">
+                  <Image
+                    src="/memoji.png"
+                    alt="Abhi's Memoji avatar"
+                    width={180}
+                    height={180}
+                    priority
+                    className="h-full w-full object-contain"
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <h1 className="overflow-hidden text-4xl font-bold leading-tight tracking-tight sm:text-6xl">
-          {TITLE.split("").map((char, index) => (
-            <span
-              key={index}
-              className={`hero-char inline-block ${
-                index >= NAME_START ? "text-accent" : "text-cream"
-              }`}
+          <h1 className="overflow-hidden text-4xl font-bold leading-tight tracking-tight sm:text-6xl">
+            {TITLE.split("").map((char, index) => (
+              <span
+                key={index}
+                className={`hero-char inline-block ${
+                  index >= NAME_START ? "text-accent" : "text-cream"
+                }`}
+              >
+                {char === " " ? "\u00A0" : char}
+              </span>
+            ))}
+          </h1>
+
+          <p className="hero-subtitle mx-auto mt-6 max-w-md text-base text-foreground/70 sm:text-lg">
+            Full Stack Developer &amp; CS Student at Northeastern
+          </p>
+
+          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <a
+              href="#projects"
+              className="hero-cta glass inline-flex w-full items-center justify-center rounded-full border border-accent/40 bg-accent/15 px-7 py-3 text-sm font-medium text-cream transition-all duration-300 hover:border-accent/70 hover:bg-accent/25 hover:shadow-[0_0_30px_rgba(41,151,255,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 sm:w-auto"
             >
-              {char === " " ? " " : char}
-            </span>
-          ))}
-        </h1>
-
-        <p className="hero-subtitle mx-auto mt-6 max-w-md text-base text-foreground/70 sm:text-lg">
-          Full Stack Developer &amp; CS Student at Northeastern
-        </p>
-
-        <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <a
-            href="#projects"
-            className="hero-cta glass inline-flex w-full items-center justify-center rounded-full border border-accent/40 bg-accent/15 px-7 py-3 text-sm font-medium text-cream transition-all duration-300 hover:border-accent/70 hover:bg-accent/25 hover:shadow-[0_0_30px_rgba(41,151,255,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 sm:w-auto"
-          >
-            View My Work
-          </a>
-          <a
-            href="#contact"
-            className="hero-cta glass inline-flex w-full items-center justify-center rounded-full border border-white/15 px-7 py-3 text-sm font-medium text-foreground/90 transition-all duration-300 hover:border-white/30 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 sm:w-auto"
-          >
-            Let&apos;s Talk
-          </a>
-        </div>
-      </GlassCard>
+              View My Work
+            </a>
+            <a
+              href="#contact"
+              className="hero-cta glass inline-flex w-full items-center justify-center rounded-full border border-white/15 px-7 py-3 text-sm font-medium text-foreground/90 transition-all duration-300 hover:border-white/30 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 sm:w-auto"
+            >
+              Let&apos;s Talk
+            </a>
+          </div>
+        </GlassCard>
+      </div>
 
       <a
         href="#about"
