@@ -3,6 +3,20 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { motion, useInView, animate, useReducedMotion } from "framer-motion";
 import GlassCard from "@/components/ui/GlassCard";
+import BloomOrbs, { type BloomOrb } from "@/components/ui/BloomOrbs";
+
+const ORBS: BloomOrb[] = [
+  {
+    color: "blue",
+    drift: "b",
+    className: "-right-32 -top-24 h-[420px] w-[420px] opacity-[0.14] blur-[100px]",
+  },
+  {
+    color: "purple",
+    drift: "c",
+    className: "-left-32 bottom-0 h-[380px] w-[380px] opacity-[0.12] blur-[100px]",
+  },
+];
 
 interface Stat {
   /** Numeric target the counter animates toward. */
@@ -141,8 +155,10 @@ export default function About() {
     <section
       id="about"
       aria-label="About Me"
-      className="mx-auto w-full max-w-6xl scroll-mt-20 px-6 py-28 sm:py-36"
+      className="relative isolate mx-auto w-full max-w-6xl scroll-mt-20 overflow-hidden px-6 py-28 sm:py-36"
     >
+      <BloomOrbs orbs={ORBS} />
+
       <motion.div {...fadeIn} className="mb-14 text-center sm:mb-20">
         <h2 className="inline-block text-3xl font-bold tracking-tight text-cream sm:text-4xl">
           About Me

@@ -3,6 +3,25 @@
 import { useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import GlassCard from "@/components/ui/GlassCard";
+import BloomOrbs, { type BloomOrb } from "@/components/ui/BloomOrbs";
+
+const ORBS: BloomOrb[] = [
+  {
+    color: "pink",
+    drift: "a",
+    className: "-left-40 -top-24 h-[440px] w-[440px] opacity-[0.13] blur-[110px]",
+  },
+  {
+    color: "teal",
+    drift: "d",
+    className: "-right-40 bottom-0 h-[460px] w-[460px] opacity-[0.12] blur-[110px]",
+  },
+  {
+    color: "blue",
+    drift: "b",
+    className: "right-0 top-1/3 h-[360px] w-[360px] opacity-[0.10] blur-[100px]",
+  },
+];
 
 interface Project {
   title: string;
@@ -205,8 +224,10 @@ export default function Projects() {
     <section
       id="projects"
       aria-label="Projects"
-      className="mx-auto w-full max-w-6xl scroll-mt-20 px-6 py-28 sm:py-36"
+      className="relative isolate mx-auto w-full max-w-6xl scroll-mt-20 overflow-hidden px-6 py-28 sm:py-36"
     >
+      <BloomOrbs orbs={ORBS} />
+
       <motion.div
         initial={{ opacity: 0, y: 28 }}
         whileInView={{ opacity: 1, y: 0 }}

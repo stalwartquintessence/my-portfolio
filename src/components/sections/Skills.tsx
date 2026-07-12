@@ -2,6 +2,20 @@
 
 import { motion } from "framer-motion";
 import GlassCard from "@/components/ui/GlassCard";
+import BloomOrbs, { type BloomOrb } from "@/components/ui/BloomOrbs";
+
+const ORBS: BloomOrb[] = [
+  {
+    color: "teal",
+    drift: "c",
+    className: "-left-32 -top-24 h-[420px] w-[420px] opacity-[0.13] blur-[100px]",
+  },
+  {
+    color: "purple",
+    drift: "a",
+    className: "-right-32 bottom-0 h-[400px] w-[400px] opacity-[0.12] blur-[100px]",
+  },
+];
 
 interface Skill {
   name: string;
@@ -104,8 +118,10 @@ export default function Skills() {
     <section
       id="skills"
       aria-label="Skills"
-      className="mx-auto w-full max-w-6xl scroll-mt-20 px-6 py-28 sm:py-36"
+      className="relative isolate mx-auto w-full max-w-6xl scroll-mt-20 overflow-hidden px-6 py-28 sm:py-36"
     >
+      <BloomOrbs orbs={ORBS} />
+
       <motion.div {...fadeIn} className="mb-14 text-center sm:mb-20">
         <h2 className="inline-block text-3xl font-bold tracking-tight text-cream sm:text-4xl">
           Skills

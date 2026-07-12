@@ -4,6 +4,32 @@ import { useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import gsap from "gsap";
 import GlassCard from "@/components/ui/GlassCard";
+import BloomOrbs, { type BloomOrb } from "@/components/ui/BloomOrbs";
+
+// Four large blurred orbs anchored to each corner, floating behind the 3D
+// scene to give the hero an Apple-style vibrant glow.
+const HERO_ORBS: BloomOrb[] = [
+  {
+    color: "purple",
+    drift: "a",
+    className: "-left-40 -top-40 h-[680px] w-[680px] opacity-[0.22] blur-[120px]",
+  },
+  {
+    color: "blue",
+    drift: "b",
+    className: "-right-40 -top-32 h-[640px] w-[640px] opacity-[0.20] blur-[120px]",
+  },
+  {
+    color: "pink",
+    drift: "c",
+    className: "-left-32 -bottom-40 h-[600px] w-[600px] opacity-[0.18] blur-[120px]",
+  },
+  {
+    color: "teal",
+    drift: "d",
+    className: "-right-40 -bottom-40 h-[760px] w-[760px] opacity-[0.16] blur-[120px]",
+  },
+];
 
 // Three.js scene is client-only and lazy-loaded so it never blocks first paint.
 const HeroScene = dynamic(() => import("@/components/three/HeroScene"), {
@@ -63,8 +89,11 @@ export default function Hero() {
       ref={sectionRef}
       id="hero"
       aria-label="Introduction"
-      className="relative flex min-h-screen w-full items-center justify-center overflow-hidden px-6"
+      className="relative isolate flex min-h-screen w-full items-center justify-center overflow-hidden px-6"
     >
+      {/* Ambient color blooms, pinned behind the 3D canvas (-z-10 < z-0). */}
+      <BloomOrbs orbs={HERO_ORBS} />
+
       {/* Decorative 3D background: absolutely positioned and pinned to z-0 so
           it always sits behind the z-10 content. */}
       <div className="absolute inset-0 z-0" aria-hidden="true">

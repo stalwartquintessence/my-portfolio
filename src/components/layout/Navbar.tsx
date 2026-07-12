@@ -14,7 +14,7 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="glass sticky top-0 z-50 border-b border-white/10">
+    <header className="sticky top-0 z-50 border-b border-white/[0.08] bg-black/40 backdrop-blur-[20px] backdrop-saturate-[1.8]">
       <nav
         aria-label="Primary"
         className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4"

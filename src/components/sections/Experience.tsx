@@ -2,6 +2,20 @@
 
 import { motion } from "framer-motion";
 import GlassCard from "@/components/ui/GlassCard";
+import BloomOrbs, { type BloomOrb } from "@/components/ui/BloomOrbs";
+
+const ORBS: BloomOrb[] = [
+  {
+    color: "blue",
+    drift: "b",
+    className: "-left-32 -top-24 h-[400px] w-[400px] opacity-[0.13] blur-[100px]",
+  },
+  {
+    color: "pink",
+    drift: "d",
+    className: "-right-32 bottom-0 h-[380px] w-[380px] opacity-[0.11] blur-[100px]",
+  },
+];
 
 interface ExperienceEntry {
   role: string;
@@ -144,8 +158,10 @@ export default function Experience() {
     <section
       id="experience"
       aria-label="Experience"
-      className="mx-auto w-full max-w-5xl scroll-mt-20 px-6 py-28 sm:py-36"
+      className="relative isolate mx-auto w-full max-w-5xl scroll-mt-20 overflow-hidden px-6 py-28 sm:py-36"
     >
+      <BloomOrbs orbs={ORBS} />
+
       <motion.div {...fadeIn} className="mb-14 text-center sm:mb-20">
         <h2 className="inline-block text-3xl font-bold tracking-tight text-cream sm:text-4xl">
           Experience

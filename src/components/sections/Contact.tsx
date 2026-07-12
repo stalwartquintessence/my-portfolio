@@ -3,6 +3,20 @@
 import { useState, type FormEvent, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import GlassCard from "@/components/ui/GlassCard";
+import BloomOrbs, { type BloomOrb } from "@/components/ui/BloomOrbs";
+
+const ORBS: BloomOrb[] = [
+  {
+    color: "purple",
+    drift: "c",
+    className: "-right-32 -top-24 h-[420px] w-[420px] opacity-[0.14] blur-[110px]",
+  },
+  {
+    color: "teal",
+    drift: "a",
+    className: "-left-32 bottom-0 h-[400px] w-[400px] opacity-[0.12] blur-[110px]",
+  },
+];
 
 const fadeIn = {
   initial: { opacity: 0, y: 28 },
@@ -91,8 +105,10 @@ export default function Contact() {
     <section
       id="contact"
       aria-label="Get In Touch"
-      className="mx-auto w-full max-w-5xl scroll-mt-20 px-6 py-28 sm:py-36"
+      className="relative isolate mx-auto w-full max-w-5xl scroll-mt-20 overflow-hidden px-6 py-28 sm:py-36"
     >
+      <BloomOrbs orbs={ORBS} />
+
       <motion.div {...fadeIn} className="mb-12 text-center sm:mb-16">
         <h2 className="inline-block text-3xl font-bold tracking-tight text-cream sm:text-4xl">
           Get In Touch
