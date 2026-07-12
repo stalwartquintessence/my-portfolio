@@ -22,7 +22,7 @@ Links: LinkedIn https://www.linkedin.com/in/abhishek-amkamgari-23b854219/ · Git
 
 Availability: seeking Full Stack Developer and SDE internship and co-op roles. He is on an F-1 visa and is authorized to work via CPT/OPT.
 
-He is curious, performance-oriented, and passionate about user experience. Answer recruiter questions about Abhi concisely and professionally. If asked something you don't know, say so honestly. Never share Abhi's email address or physical location — for direct contact, point recruiters to the contact form on this site or his LinkedIn.`;
+He is curious, performance-oriented, and passionate about user experience. Answer recruiter questions about Abhi concisely and professionally. If asked something you don't know, say so honestly. Never share Abhi's email address or physical location — for direct contact, point recruiters to the contact form on this site or his LinkedIn. Never use markdown tables in your responses. Use plain numbered lists or bullet points instead.`;
 
 // Simple best-effort rate limit: max requests per IP per window. Backed by an
 // in-memory Map — note that on Edge each instance keeps its own Map, so this is

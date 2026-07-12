@@ -12,26 +12,136 @@ import { motion } from "framer-motion";
 import GlassCard from "@/components/ui/GlassCard";
 
 /**
- * Minimal inline renderer: turns `**bold**` into <strong> and newlines into
- * <br/>. Not a full markdown parser — just enough for the model's basic
- * formatting. Splitting on the `**…**` capture group keeps the bold text at
- * odd indices.
+ * Inline renderer: turns `**bold**` into <strong>. Splitting on the `**…**`
+ * capture group keeps the bold text at odd indices.
+ */
+function renderInline(text: string, keyPrefix: string): ReactNode {
+  return text.split(/\*\*(.+?)\*\*/g).map((part, partIndex) =>
+    partIndex % 2 === 1 ? (
+      <strong key={`${keyPrefix}-${partIndex}`} className="font-semibold text-cream">
+        {part}
+      </strong>
+    ) : (
+      <Fragment key={`${keyPrefix}-${partIndex}`}>{part}</Fragment>
+    ),
+  );
+}
+
+/** A line that looks like a table row: contains at least one pipe. */
+function isTableRow(line: string): boolean {
+  return line.includes("|");
+}
+
+/** The `| --- | :--: |` divider between a table header and its body. */
+function isSeparatorRow(line: string): boolean {
+  const trimmed = line.trim();
+  return trimmed.includes("-") && /^\|?[\s:|-]+\|?$/.test(trimmed);
+}
+
+/** Split a row into trimmed cells, ignoring the optional outer pipes. */
+function splitTableRow(line: string): string[] {
+  let cells = line.trim();
+  if (cells.startsWith("|")) cells = cells.slice(1);
+  if (cells.endsWith("|")) cells = cells.slice(0, -1);
+  return cells.split("|").map((cell) => cell.trim());
+}
+
+/**
+ * Renders assistant text with light markdown support: `**bold**`, newlines,
+ * and GitHub-style tables (a header row followed by a `---` separator). Tables
+ * become real <table> elements styled for the glass aesthetic; everything else
+ * renders as text runs with <br/> between lines.
  */
 function renderRichText(text: string): ReactNode {
-  return text.split("\n").map((line, lineIndex) => (
-    <Fragment key={lineIndex}>
-      {lineIndex > 0 && <br />}
-      {line.split(/\*\*(.+?)\*\*/g).map((part, partIndex) =>
-        partIndex % 2 === 1 ? (
-          <strong key={partIndex} className="font-semibold text-cream">
-            {part}
-          </strong>
-        ) : (
-          <Fragment key={partIndex}>{part}</Fragment>
-        ),
-      )}
-    </Fragment>
-  ));
+  const lines = text.split("\n");
+  const blocks: ReactNode[] = [];
+  let textRun: string[] = [];
+
+  const flushText = () => {
+    // Drop runs that are only blank lines (e.g. spacing around a table).
+    if (textRun.some((line) => line.trim() !== "")) {
+      const run = textRun;
+      const key = `text-${blocks.length}`;
+      blocks.push(
+        <p key={key}>
+          {run.map((line, index) => (
+            <Fragment key={index}>
+              {index > 0 && <br />}
+              {renderInline(line, `${key}-${index}`)}
+            </Fragment>
+          ))}
+        </p>,
+      );
+    }
+    textRun = [];
+  };
+
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    const next = lines[i + 1];
+
+    if (isTableRow(line) && next !== undefined && isSeparatorRow(next)) {
+      flushText();
+
+      const headerCells = splitTableRow(line);
+      i += 2; // consume the header + separator rows
+
+      const bodyRows: string[][] = [];
+      while (
+        i < lines.length &&
+        isTableRow(lines[i]) &&
+        !isSeparatorRow(lines[i])
+      ) {
+        bodyRows.push(splitTableRow(lines[i]));
+        i += 1;
+      }
+
+      const key = `table-${blocks.length}`;
+      blocks.push(
+        <div key={key} className="my-2 overflow-x-auto">
+          <table className="w-full border-collapse text-left text-xs">
+            <thead>
+              <tr className="border-b border-white/20">
+                {headerCells.map((cell, cellIndex) => (
+                  <th
+                    key={cellIndex}
+                    className="px-3 py-1.5 font-semibold text-cream"
+                  >
+                    {renderInline(cell, `${key}-h-${cellIndex}`)}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {bodyRows.map((row, rowIndex) => (
+                <tr
+                  key={rowIndex}
+                  className="border-b border-white/10 last:border-0"
+                >
+                  {row.map((cell, cellIndex) => (
+                    <td
+                      key={cellIndex}
+                      className="px-3 py-1.5 align-top text-foreground/80"
+                    >
+                      {renderInline(cell, `${key}-${rowIndex}-${cellIndex}`)}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>,
+      );
+    } else {
+      textRun.push(line);
+      i += 1;
+    }
+  }
+
+  flushText();
+
+  return <>{blocks}</>;
 }
 
 interface ChatMessage {
