@@ -320,6 +320,27 @@ body {
   animation: badge-float-c 7.5s ease-in-out infinite 0.2s;
 }
 
+/* ---- Emoji satellite badges (orbit the hero memoji) ---- */
+
+.memoji-badge {
+  will-change: transform;
+}
+
+/* Reuse the badge-float keyframes at their own speeds/delays so the four
+   satellites bob out of sync with each other and with the card pills. */
+.memoji-badge--1 {
+  animation: badge-float-a 4.5s ease-in-out infinite;
+}
+.memoji-badge--2 {
+  animation: badge-float-c 5.5s ease-in-out infinite 0.3s;
+}
+.memoji-badge--3 {
+  animation: badge-float-b 6.2s ease-in-out infinite 0.6s;
+}
+.memoji-badge--4 {
+  animation: badge-float-a 5s ease-in-out infinite 0.9s;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .bloom-orb--a,
   .bloom-orb--b,
@@ -343,7 +364,11 @@ body {
   .tech-badge--3,
   .tech-badge--4,
   .tech-badge--5,
-  .tech-badge--6 {
+  .tech-badge--6,
+  .memoji-badge--1,
+  .memoji-badge--2,
+  .memoji-badge--3,
+  .memoji-badge--4 {
     animation: none;
   }
 }
