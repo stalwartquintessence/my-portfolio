@@ -175,6 +175,151 @@ body {
   animation: bloom-drift-d 30s ease-in-out infinite;
 }
 
+/* ---- Hero memoji (glow + rotating iridescent ring + floating bob) ---- */
+
+/* Soft radial bloom behind the memoji disc; gently pulses to feel alive. */
+.memoji-glow {
+  position: absolute;
+  inset: -28%;
+  z-index: -1;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    rgba(191, 90, 242, 0.55),
+    rgba(10, 132, 255, 0.4) 38%,
+    rgba(255, 55, 95, 0.22) 62%,
+    transparent 76%
+  );
+  filter: blur(44px);
+  will-change: transform, opacity;
+  animation: memoji-glow-pulse 4s ease-in-out infinite;
+}
+
+@keyframes memoji-glow-pulse {
+  0%,
+  100% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+/* Up/down bob on a GPU-promoted layer for a smooth 60fps float. */
+.memoji-bob {
+  will-change: transform;
+  animation: memoji-bob 3s ease-in-out infinite;
+}
+
+@keyframes memoji-bob {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -12px, 0);
+  }
+}
+
+/* Ring wrapper: the padding is the ring thickness; the rotating conic
+   gradient lives on ::before and shows through only in that padding band. */
+.memoji-ring {
+  position: relative;
+  padding: 4px;
+  border-radius: 9999px;
+}
+
+.memoji-ring::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 0deg,
+    var(--color-bloom-purple),
+    var(--color-bloom-blue),
+    var(--color-bloom-pink),
+    var(--color-bloom-teal),
+    var(--color-bloom-purple)
+  );
+  will-change: transform;
+  animation: memoji-spin 8s linear infinite;
+}
+
+@keyframes memoji-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Frosted disc that holds the transparent memoji PNG, above the ring gradient. */
+.memoji-inner {
+  position: relative;
+  z-index: 1;
+  border-radius: 9999px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+}
+
+/* ---- Floating tech badges (hero, desktop only) ---- */
+
+.tech-badge {
+  will-change: transform;
+}
+
+@keyframes badge-float-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -14px, 0);
+  }
+}
+
+@keyframes badge-float-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(6px, -10px, 0);
+  }
+}
+
+@keyframes badge-float-c {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-6px, -16px, 0);
+  }
+}
+
+.tech-badge--1 {
+  animation: badge-float-a 5s ease-in-out infinite;
+}
+.tech-badge--2 {
+  animation: badge-float-b 6.5s ease-in-out infinite;
+}
+.tech-badge--3 {
+  animation: badge-float-c 5.8s ease-in-out infinite;
+}
+.tech-badge--4 {
+  animation: badge-float-a 7s ease-in-out infinite 0.4s;
+}
+.tech-badge--5 {
+  animation: badge-float-b 6s ease-in-out infinite 0.8s;
+}
+.tech-badge--6 {
+  animation: badge-float-c 7.5s ease-in-out infinite 0.2s;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .bloom-orb--a,
   .bloom-orb--b,
@@ -188,5 +333,17 @@ body {
   }
   .glass-card:hover {
     transform: none;
+  }
+
+  .memoji-glow,
+  .memoji-bob,
+  .memoji-ring::before,
+  .tech-badge--1,
+  .tech-badge--2,
+  .tech-badge--3,
+  .tech-badge--4,
+  .tech-badge--5,
+  .tech-badge--6 {
+    animation: none;
   }
 }

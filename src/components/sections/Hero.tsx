@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import dynamic from "next/dynamic";
+import Image from "next/image";
 import gsap from "gsap";
 import GlassCard from "@/components/ui/GlassCard";
 import BloomOrbs, { type BloomOrb } from "@/components/ui/BloomOrbs";
 
-// Four large blurred orbs anchored to each corner, floating behind the 3D
-// scene to give the hero an Apple-style vibrant glow.
+// Four large blurred orbs anchored to each corner, floating behind the hero
+// content to give it an Apple-style vibrant glow.
 const HERO_ORBS: BloomOrb[] = [
   {
     color: "purple",
@@ -31,10 +31,25 @@ const HERO_ORBS: BloomOrb[] = [
   },
 ];
 
-// Three.js scene is client-only and lazy-loaded so it never blocks first paint.
-const HeroScene = dynamic(() => import("@/components/three/HeroScene"), {
-  ssr: false,
-});
+// Small glass pills floating around the hero card. Positions are anchored to
+// the section edges; each pill drifts on its own timing so the cluster feels
+// organic. Hidden on mobile (the card fills the viewport there).
+interface TechBadge {
+  label: string;
+  /** Tailwind absolute-position classes, relative to the section. */
+  position: string;
+  /** Float animation variant + timing class. */
+  float: string;
+}
+
+const TECH_BADGES: TechBadge[] = [
+  { label: "Next.js", position: "left-[10%] top-[24%]", float: "tech-badge--1" },
+  { label: "TypeScript", position: "right-[9%] top-[20%]", float: "tech-badge--2" },
+  { label: "React", position: "left-[6%] top-1/2", float: "tech-badge--3" },
+  { label: "Node.js", position: "right-[7%] top-[58%]", float: "tech-badge--4" },
+  { label: "AI/ML", position: "left-[15%] bottom-[22%]", float: "tech-badge--5" },
+  { label: "Three.js", position: "right-[14%] bottom-[20%]", float: "tech-badge--6" },
+];
 
 const TITLE = "Hi, I'm Abhi";
 const NAME_START = TITLE.indexOf("Abhi");
@@ -57,9 +72,15 @@ export default function Hero() {
       const timeline = gsap.timeline({ defaults: { ease: "power3.out" } });
       timeline
         .fromTo(
+          ".hero-memoji",
+          { y: 24, opacity: 0, scale: 0.85 },
+          { y: 0, opacity: 1, scale: 1, duration: 0.7 },
+        )
+        .fromTo(
           ".hero-char",
           { yPercent: 120, opacity: 0 },
           { yPercent: 0, opacity: 1, duration: 0.8, stagger: 0.035 },
+          "-=0.3",
         )
         .fromTo(
           ".hero-subtitle",
@@ -72,6 +93,12 @@ export default function Hero() {
           { y: 20, opacity: 0 },
           { y: 0, opacity: 1, duration: 0.5, stagger: 0.12 },
           "-=0.2",
+        )
+        .fromTo(
+          ".hero-badge",
+          { opacity: 0, scale: 0.85 },
+          { opacity: 1, scale: 1, duration: 0.5, stagger: 0.1 },
+          "-=0.25",
         )
         .fromTo(
           ".hero-scroll",
@@ -91,16 +118,44 @@ export default function Hero() {
       aria-label="Introduction"
       className="relative isolate flex min-h-screen w-full items-center justify-center overflow-hidden px-6"
     >
-      {/* Ambient color blooms, pinned behind the 3D canvas (-z-10 < z-0). */}
+      {/* Ambient color blooms, pinned behind everything (-z-10). */}
       <BloomOrbs orbs={HERO_ORBS} />
 
-      {/* Decorative 3D background: absolutely positioned and pinned to z-0 so
-          it always sits behind the z-10 content. */}
-      <div className="absolute inset-0 z-0" aria-hidden="true">
-        <HeroScene />
+      {/* Floating tech pills orbiting the card. Decorative, desktop-only. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-[5] hidden md:block"
+      >
+        {TECH_BADGES.map((badge) => (
+          <span
+            key={badge.label}
+            className={`hero-badge tech-badge glass absolute rounded-full border border-white/15 px-4 py-2 text-xs font-medium text-foreground/80 shadow-[0_4px_20px_rgba(0,0,0,0.35)] ${badge.position} ${badge.float}`}
+          >
+            {badge.label}
+          </span>
+        ))}
       </div>
 
       <GlassCard className="relative z-10 max-w-2xl px-8 py-12 text-center sm:px-12 sm:py-16">
+        {/* Memoji: soft bloom glow + rotating iridescent ring + bobbing image. */}
+        <div className="hero-memoji relative mx-auto mb-8 h-[180px] w-[180px]">
+          <span aria-hidden="true" className="memoji-glow" />
+          <div className="memoji-bob relative h-full w-full">
+            <div className="memoji-ring h-full w-full">
+              <div className="memoji-inner flex h-full w-full items-center justify-center">
+                <Image
+                  src="/memoji.png"
+                  alt="Abhi's Memoji avatar"
+                  width={180}
+                  height={180}
+                  priority
+                  className="h-full w-full object-contain"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
         <h1 className="overflow-hidden text-4xl font-bold leading-tight tracking-tight sm:text-6xl">
           {TITLE.split("").map((char, index) => (
             <span
@@ -109,7 +164,7 @@ export default function Hero() {
                 index >= NAME_START ? "text-accent" : "text-cream"
               }`}
             >
-              {char === " " ? " " : char}
+              {char === " " ? " " : char}
             </span>
           ))}
         </h1>
