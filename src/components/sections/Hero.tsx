@@ -3,6 +3,15 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
+import {
+  siNextdotjs,
+  siReact,
+  siTypescript,
+  siNodedotjs,
+  siPython,
+  siDocker,
+  type SimpleIcon,
+} from "simple-icons";
 import GlassCard from "@/components/ui/GlassCard";
 import BloomOrbs, { type BloomOrb } from "@/components/ui/BloomOrbs";
 
@@ -31,11 +40,19 @@ const HERO_ORBS: BloomOrb[] = [
   },
 ];
 
-// Small glass pills floating around the hero card. Each pill drifts on its own
-// timing so the cluster feels organic. Hidden on mobile (the card fills the
-// viewport there).
+// Vibrant glass pills floating around the hero card, each showing a real tech
+// logo (simple-icons) above its short name. Each drifts on its own timing so
+// the cluster feels organic. Hidden on mobile (the card fills the viewport).
 interface TechBadge {
-  label: string;
+  /** Brand logo from simple-icons (supplies the SVG path). */
+  icon: SimpleIcon;
+  /** Short display name shown under the icon. */
+  name: string;
+  /**
+   * Static Tailwind `fill-[#hex]` class for the brand color. Next.js is forced
+   * light (its brand mark is black) so it reads on the dark glass pill.
+   */
+  iconClass: string;
   /** Tailwind absolute-position classes, relative to the card wrapper. */
   position: string;
   /** Float animation variant + timing class. */
@@ -46,12 +63,12 @@ interface TechBadge {
 // negative offsets, so each pill hugs just outside the card edge and reads as
 // belonging to the card rather than drifting across the screen.
 const TECH_BADGES: TechBadge[] = [
-  { label: "Next.js", position: "-left-10 top-14", float: "tech-badge--1" },
-  { label: "TypeScript", position: "-right-10 top-14", float: "tech-badge--2" },
-  { label: "React", position: "-left-16 top-[45%]", float: "tech-badge--3" },
-  { label: "Node.js", position: "-right-16 top-1/2", float: "tech-badge--4" },
-  { label: "AI/ML", position: "-left-8 bottom-16", float: "tech-badge--5" },
-  { label: "Three.js", position: "-right-8 bottom-16", float: "tech-badge--6" },
+  { icon: siNextdotjs, name: "Next.js", iconClass: "fill-[#f5f5f7]", position: "-left-12 top-12", float: "tech-badge--1" },
+  { icon: siReact, name: "React", iconClass: "fill-[#61DAFB]", position: "-right-12 top-12", float: "tech-badge--2" },
+  { icon: siTypescript, name: "TypeScript", iconClass: "fill-[#3178C6]", position: "-left-20 top-[44%]", float: "tech-badge--3" },
+  { icon: siNodedotjs, name: "Node.js", iconClass: "fill-[#5FA04E]", position: "-right-20 top-1/2", float: "tech-badge--4" },
+  { icon: siPython, name: "Python", iconClass: "fill-[#3776AB]", position: "-left-10 bottom-14", float: "tech-badge--5" },
+  { icon: siDocker, name: "Docker", iconClass: "fill-[#2496ED]", position: "-right-10 bottom-14", float: "tech-badge--6" },
 ];
 
 // Small emoji satellite pills hugging the memoji circle (distinct from the
@@ -66,10 +83,10 @@ interface MemojiBadge {
 }
 
 const MEMOJI_BADGES: MemojiBadge[] = [
-  { label: "⚡ Fast", position: "-top-3 right-0", float: "memoji-badge--1" },
-  { label: "🧠 AI", position: "top-9 -left-12", float: "memoji-badge--2" },
-  { label: "☁️ Cloud", position: "-bottom-1 -right-8", float: "memoji-badge--3" },
-  { label: "🔬 Research", position: "bottom-7 -left-8", float: "memoji-badge--4" },
+  { label: "⚡ Fast", position: "-top-1 right-3", float: "memoji-badge--1" },
+  { label: "🧠 AI", position: "top-10 -left-6", float: "memoji-badge--2" },
+  { label: "☁️ Cloud", position: "bottom-1 -right-4", float: "memoji-badge--3" },
+  { label: "🔬 Research", position: "bottom-8 -left-4", float: "memoji-badge--4" },
 ];
 
 const TITLE = "Hi, I'm Abhi";
@@ -123,12 +140,6 @@ export default function Hero() {
           { opacity: 0, scale: 0.85 },
           { opacity: 1, scale: 1, duration: 0.5, stagger: 0.1 },
           "-=0.25",
-        )
-        .fromTo(
-          ".hero-scroll",
-          { opacity: 0 },
-          { opacity: 1, duration: 0.6 },
-          "-=0.1",
         );
     }, sectionRef);
 
@@ -202,10 +213,19 @@ export default function Hero() {
         >
           {TECH_BADGES.map((badge) => (
             <span
-              key={badge.label}
-              className={`hero-badge tech-badge glass absolute rounded-full border border-white/15 px-4 py-2 text-xs font-medium text-foreground/80 shadow-[0_4px_20px_rgba(0,0,0,0.35)] ${badge.position} ${badge.float}`}
+              key={badge.name}
+              className={`hero-badge tech-badge glass absolute flex flex-col items-center gap-1 rounded-2xl border border-white/15 px-4 py-3 shadow-[0_6px_24px_rgba(0,0,0,0.4)] ${badge.position} ${badge.float}`}
             >
-              {badge.label}
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                className={`h-6 w-6 ${badge.iconClass}`}
+              >
+                <path d={badge.icon.path} />
+              </svg>
+              <span className="text-[0.7rem] font-medium text-foreground/80">
+                {badge.name}
+              </span>
             </span>
           ))}
         </div>
@@ -241,7 +261,7 @@ export default function Hero() {
               {MEMOJI_BADGES.map((badge) => (
                 <span
                   key={badge.label}
-                  className={`hero-badge memoji-badge glass absolute whitespace-nowrap rounded-full border border-white/15 px-2.5 py-1 text-[0.7rem] font-medium text-cream shadow-[0_4px_16px_rgba(0,0,0,0.35)] ${badge.position} ${badge.float}`}
+                  className={`hero-badge memoji-badge absolute whitespace-nowrap rounded-full border border-white/10 bg-white/[0.06] px-2 py-0.5 text-[0.6rem] font-medium text-cream/70 backdrop-blur-md ${badge.position} ${badge.float}`}
                 >
                   {badge.label}
                 </span>
@@ -282,29 +302,6 @@ export default function Hero() {
           </div>
         </GlassCard>
       </div>
-
-      <a
-        href="#about"
-        aria-label="Scroll to About section"
-        className="hero-scroll absolute bottom-8 left-1/2 z-10 -translate-x-1/2 text-foreground/50 transition-colors hover:text-accent"
-      >
-        <span className="flex flex-col items-center gap-2">
-          <span className="text-xs uppercase tracking-widest">Scroll</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={1.5}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="h-5 w-5 animate-bounce"
-            aria-hidden="true"
-          >
-            <path d="m6 9 6 6 6-6" />
-          </svg>
-        </span>
-      </a>
     </section>
   );
 }

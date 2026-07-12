@@ -254,15 +254,15 @@ body {
   }
 }
 
-/* Frosted disc that holds the transparent memoji PNG, above the ring gradient. */
+/* Dark disc that holds the transparent memoji PNG, above the ring gradient.
+   No light fill — the iridescent ring is the only frame and the memoji sits on
+   a near-transparent dark backdrop so the colored glow behind reads through. */
 .memoji-inner {
   position: relative;
   z-index: 1;
   border-radius: 9999px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px) saturate(150%);
-  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  background: rgba(10, 10, 10, 0.45);
 }
 
 /* ---- Floating tech badges (hero, desktop only) ---- */
