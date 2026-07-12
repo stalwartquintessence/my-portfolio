@@ -167,14 +167,14 @@ export default function About() {
           </h2>
         </motion.div>
 
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid items-stretch gap-6 lg:grid-cols-2">
           {/* Left column: bio + animated stats */}
           <motion.div
             {...fadeIn}
             transition={{ ...fadeIn.transition, delay: 0.05 }}
             className="flex flex-col gap-6"
           >
-            <GlassCard className="p-8 sm:p-10">
+            <GlassCard className="flex-1 p-8 sm:p-10">
               <p className="text-base leading-relaxed text-foreground/80 sm:text-lg">
                 {BIO}
               </p>
