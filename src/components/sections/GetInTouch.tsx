@@ -259,14 +259,21 @@ function AskMyAI() {
     void sendMessage(input);
   }
 
+  // Empty state gets centered placeholder text; once messages exist they stack
+  // from the top and scroll normally.
+  const isEmpty = messages.length === 0 && !isLoading;
+
   return (
     <GlassCard className="flex flex-col p-5 sm:p-6">
-      {/* Message history — fixed max height so it scrolls instead of growing
-          the card and pushing the input bar (below) off the bottom. Borderless
-          with a premium scrollbar so messages feel like they float in space. */}
+      {/* Message history — fixed min/max height so the card keeps a consistent
+          size whether empty or full, scrolling instead of growing and pushing
+          the input bar (below) off the bottom. Borderless with a premium
+          scrollbar so messages feel like they float in space. */}
       <div
         ref={scrollRef}
-        className="premium-scroll flex max-h-[350px] min-h-[280px] flex-col gap-4 overflow-y-auto px-1 py-2"
+        className={`premium-scroll flex max-h-[350px] min-h-[300px] flex-col gap-4 overflow-y-auto px-1 py-2 ${
+          isEmpty ? "items-center justify-center" : ""
+        }`}
         aria-live="polite"
       >
         {messages.length === 0 && !isLoading && (
