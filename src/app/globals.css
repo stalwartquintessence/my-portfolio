@@ -175,94 +175,14 @@ body {
   animation: bloom-drift-d 30s ease-in-out infinite;
 }
 
-/* ---- Hero memoji (glow + rotating iridescent ring + floating bob) ---- */
+/* ---- Hero memoji (full-bleed "movie poster" backdrop) ---- */
 
-/* Soft radial bloom behind the memoji disc; gently pulses to feel alive. */
-.memoji-glow {
-  position: absolute;
-  inset: -28%;
-  z-index: -1;
-  border-radius: 9999px;
-  background: radial-gradient(
-    circle,
-    rgba(191, 90, 242, 0.55),
-    rgba(10, 132, 255, 0.4) 38%,
-    rgba(255, 55, 95, 0.22) 62%,
-    transparent 76%
-  );
-  filter: blur(44px);
-  will-change: transform, opacity;
-  animation: memoji-glow-pulse 4s ease-in-out infinite;
-}
-
-@keyframes memoji-glow-pulse {
-  0%,
-  100% {
-    opacity: 0.75;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.08);
-  }
-}
-
-/* Up/down bob on a GPU-promoted layer for a smooth 60fps float. */
-.memoji-bob {
-  will-change: transform;
-  animation: memoji-bob 3s ease-in-out infinite;
-}
-
-@keyframes memoji-bob {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-  50% {
-    transform: translate3d(0, -12px, 0);
-  }
-}
-
-/* Ring wrapper: the padding is the ring thickness; the rotating conic
-   gradient lives on ::before and shows through only in that padding band. */
-.memoji-ring {
-  position: relative;
-  padding: 4px;
-  border-radius: 9999px;
-}
-
-.memoji-ring::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: conic-gradient(
-    from 0deg,
-    var(--color-bloom-purple),
-    var(--color-bloom-blue),
-    var(--color-bloom-pink),
-    var(--color-bloom-teal),
-    var(--color-bloom-purple)
-  );
-  will-change: transform;
-  animation: memoji-spin 8s linear infinite;
-}
-
-@keyframes memoji-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Dark disc that holds the transparent memoji PNG, above the ring gradient.
-   No light fill — the iridescent ring is the only frame and the memoji sits on
-   a near-transparent dark backdrop so the colored glow behind reads through. */
-.memoji-inner {
-  position: relative;
-  z-index: 1;
-  border-radius: 9999px;
-  overflow: hidden;
-  background: rgba(10, 10, 10, 0.45);
+/* The memoji fills the top of the hero card and fades into it at the bottom via
+   a gradient mask, so the name + CTAs below read cleanly over its faded lower
+   half — like a movie poster. No circular crop or ring frame. */
+.memoji-poster {
+  -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
 }
 
 /* ---- Floating tech badges (hero, desktop only) ---- */
@@ -320,25 +240,38 @@ body {
   animation: badge-float-c 7.5s ease-in-out infinite 0.2s;
 }
 
-/* ---- Emoji satellite badges (orbit the hero memoji) ---- */
+/* ---- Premium scrollbar (invisible until hover) ---- */
 
-.memoji-badge {
-  will-change: transform;
+/* Overflow containers that should feel like content floating in space: the
+   scrollbar is fully transparent at rest and only fades in on hover. Thin +
+   rounded + glass-colored thumb over a transparent track. */
+.premium-scroll {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: transparent transparent; /* thumb track — hidden at rest */
+  transition: scrollbar-color 0.3s ease;
 }
 
-/* Reuse the badge-float keyframes at their own speeds/delays so the four
-   satellites bob out of sync with each other and with the card pills. */
-.memoji-badge--1 {
-  animation: badge-float-a 4.5s ease-in-out infinite;
+.premium-scroll:hover {
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
-.memoji-badge--2 {
-  animation: badge-float-c 5.5s ease-in-out infinite 0.3s;
+
+.premium-scroll::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
 }
-.memoji-badge--3 {
-  animation: badge-float-b 6.2s ease-in-out infinite 0.6s;
+
+.premium-scroll::-webkit-scrollbar-track {
+  background: transparent;
 }
-.memoji-badge--4 {
-  animation: badge-float-a 5s ease-in-out infinite 0.9s;
+
+.premium-scroll::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  border-radius: 9999px;
+  transition: background-color 0.3s ease;
+}
+
+.premium-scroll:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -356,19 +289,12 @@ body {
     transform: none;
   }
 
-  .memoji-glow,
-  .memoji-bob,
-  .memoji-ring::before,
   .tech-badge--1,
   .tech-badge--2,
   .tech-badge--3,
   .tech-badge--4,
   .tech-badge--5,
-  .tech-badge--6,
-  .memoji-badge--1,
-  .memoji-badge--2,
-  .memoji-badge--3,
-  .memoji-badge--4 {
+  .tech-badge--6 {
     animation: none;
   }
 }

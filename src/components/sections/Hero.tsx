@@ -71,24 +71,6 @@ const TECH_BADGES: TechBadge[] = [
   { icon: siDocker, name: "Docker", iconClass: "fill-[#2496ED]", position: "-right-10 bottom-14", float: "tech-badge--6" },
 ];
 
-// Small emoji satellite pills hugging the memoji circle (distinct from the
-// card-edge tech-stack pills above). They live inside the memoji parallax
-// layer, so the whole cluster leans toward the cursor as one unit.
-interface MemojiBadge {
-  label: string;
-  /** Absolute-position classes, relative to the 180px memoji box. */
-  position: string;
-  /** Float animation variant + timing class. */
-  float: string;
-}
-
-const MEMOJI_BADGES: MemojiBadge[] = [
-  { label: "⚡ Fast", position: "-top-1 right-3", float: "memoji-badge--1" },
-  { label: "🧠 AI", position: "top-10 -left-6", float: "memoji-badge--2" },
-  { label: "☁️ Cloud", position: "bottom-1 -right-4", float: "memoji-badge--3" },
-  { label: "🔬 Research", position: "bottom-8 -left-4", float: "memoji-badge--4" },
-];
-
 const TITLE = "Hi, I'm Abhi";
 const NAME_START = TITLE.indexOf("Abhi");
 
@@ -230,75 +212,61 @@ export default function Hero() {
           ))}
         </div>
 
-        <GlassCard className="w-full px-8 py-12 text-center sm:px-12 sm:py-16">
-          {/* Memoji + its orbiting emoji satellites share one parallax layer,
-              so the whole cluster leans toward the cursor as a single unit. */}
+        <GlassCard className="relative w-full overflow-hidden px-8 py-12 text-center sm:px-12 sm:py-16">
+          {/* Full-bleed Memoji "movie poster" backdrop: anchored to the top,
+              bleeding to the card edges, fading into the card at the bottom via
+              a gradient mask so the text below reads over the faded lower half.
+              Its own parallax layer leans it toward the cursor. Decorative. */}
           <div
             ref={memojiParallaxRef}
-            className="relative mx-auto mb-8 h-[180px] w-[180px] transition-transform duration-100 ease-out [will-change:transform]"
+            aria-hidden="true"
+            className="pointer-events-none absolute -inset-x-8 -top-12 z-0 h-80 transition-transform duration-100 ease-out [will-change:transform] sm:-inset-x-12 sm:-top-16 sm:h-[26rem]"
           >
-            {/* Memoji: soft bloom glow + rotating iridescent ring + bobbing image. */}
-            <div className="hero-memoji absolute inset-0">
-              <span aria-hidden="true" className="memoji-glow" />
-              <div className="memoji-bob relative h-full w-full">
-                <div className="memoji-ring h-full w-full">
-                  <div className="memoji-inner flex h-full w-full items-center justify-center">
-                    <Image
-                      src="/memoji.png"
-                      alt="Abhi's Memoji avatar"
-                      width={180}
-                      height={180}
-                      priority
-                      className="h-full w-full object-contain"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Emoji satellite pills hugging the circle edges. Decorative. */}
-            <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-              {MEMOJI_BADGES.map((badge) => (
-                <span
-                  key={badge.label}
-                  className={`hero-badge memoji-badge absolute whitespace-nowrap rounded-full border border-white/10 bg-white/[0.06] px-2 py-0.5 text-[0.6rem] font-medium text-cream/70 backdrop-blur-md ${badge.position} ${badge.float}`}
-                >
-                  {badge.label}
-                </span>
-              ))}
+            <div className="hero-memoji memoji-poster relative h-full w-full">
+              <Image
+                src="/memoji.png"
+                alt=""
+                fill
+                priority
+                sizes="(max-width: 640px) 100vw, 42rem"
+                className="object-contain object-top"
+              />
             </div>
           </div>
 
-          <h1 className="overflow-hidden text-4xl font-bold leading-tight tracking-tight sm:text-6xl">
-            {TITLE.split("").map((char, index) => (
-              <span
-                key={index}
-                className={`hero-char inline-block ${
-                  index >= NAME_START ? "text-accent" : "text-cream"
-                }`}
+          {/* Text content sits on top of the faded lower half of the poster. */}
+          <div className="relative z-10 pt-40 sm:pt-52">
+            <h1 className="overflow-hidden text-4xl font-bold leading-tight tracking-tight sm:text-6xl">
+              {TITLE.split("").map((char, index) => (
+                <span
+                  key={index}
+                  className={`hero-char inline-block ${
+                    index >= NAME_START ? "text-accent" : "text-cream"
+                  }`}
+                >
+                  {char === " " ? "\u00A0" : char}
+                </span>
+              ))}
+            </h1>
+
+            <p className="hero-subtitle mx-auto mt-6 max-w-md text-base text-foreground/70 sm:text-lg">
+              Full Stack Developer &amp; CS Student at Northeastern
+            </p>
+
+            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+              <a
+                href="#projects"
+                className="hero-cta glass inline-flex w-full items-center justify-center rounded-full border border-accent/40 bg-accent/15 px-7 py-3 text-sm font-medium text-cream transition-all duration-300 hover:border-accent/70 hover:bg-accent/25 hover:shadow-[0_0_30px_rgba(41,151,255,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 sm:w-auto"
               >
-                {char === " " ? "\u00A0" : char}
-              </span>
-            ))}
-          </h1>
-
-          <p className="hero-subtitle mx-auto mt-6 max-w-md text-base text-foreground/70 sm:text-lg">
-            Full Stack Developer &amp; CS Student at Northeastern
-          </p>
-
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a
-              href="#projects"
-              className="hero-cta glass inline-flex w-full items-center justify-center rounded-full border border-accent/40 bg-accent/15 px-7 py-3 text-sm font-medium text-cream transition-all duration-300 hover:border-accent/70 hover:bg-accent/25 hover:shadow-[0_0_30px_rgba(41,151,255,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 sm:w-auto"
-            >
-              View My Work
-            </a>
-            <a
-              href="#contact"
-              className="hero-cta glass inline-flex w-full items-center justify-center rounded-full border border-white/15 px-7 py-3 text-sm font-medium text-foreground/90 transition-all duration-300 hover:border-white/30 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 sm:w-auto"
-            >
-              Let&apos;s Talk
-            </a>
+                View My Work
+              </a>
+              <a
+                href="#contact"
+                className="hero-cta glass inline-flex w-full items-center justify-center rounded-full border border-white/15 px-7 py-3 text-sm font-medium text-foreground/90 transition-all duration-300 hover:border-white/30 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40 sm:w-auto"
+              >
+                Let&apos;s Talk
+              </a>
+            </div>
           </div>
         </GlassCard>
       </div>
